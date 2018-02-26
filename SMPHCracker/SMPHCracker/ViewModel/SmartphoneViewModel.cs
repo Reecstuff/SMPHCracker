@@ -15,7 +15,7 @@ namespace SMPHCracker.ViewModel
 
         public string Bezeichnung
         {
-            get => this.smartphone.Bezeichnung;
+            get { return this.smartphone.Bezeichnung; }
             set
             {
                 if(this.smartphone.Bezeichnung != value)
@@ -28,7 +28,7 @@ namespace SMPHCracker.ViewModel
 
         public Status Status
         {
-            get => this.smartphone.Status;
+            get { return this.smartphone.Status; }
             set
             {
                 if (this.smartphone.Status != value)

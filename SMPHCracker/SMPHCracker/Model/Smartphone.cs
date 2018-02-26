@@ -11,7 +11,7 @@ namespace SMPHCracker.Model
         private string bezeichnung;
         private Status status;
         //TODO
-        public string Bezeichnung { get => bezeichnung; set => bezeichnung = value; }
-        public Status Status { get => status; set => status = value; }
+        public string Bezeichnung { get { return bezeichnung; } set { bezeichnung = value; } }
+        public Status Status { get { return status; } set { status = value; } }
     }
 }

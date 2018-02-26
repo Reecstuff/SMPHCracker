@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace SMPHCracker.Logic
@@ -19,8 +20,7 @@ namespace SMPHCracker.Logic
         private static ProcessStartInfo ProcessInfo = new ProcessStartInfo
         {
             FileName = "cmd.exe",
-            WorkingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\adb",
-
+            WorkingDirectory = System.IO.Path.GetDirectoryName(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName) + "\\adb",
             RedirectStandardOutput = true,
             UseShellExecute = false,
             CreateNoWindow = true
