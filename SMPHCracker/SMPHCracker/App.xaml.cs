@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SMPHCracker.Logic;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,11 @@ namespace SMPHCracker
     /// </summary>
     public partial class App : Application
     {
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            ThreadController.StatusUpdateStop();
+
+            ADB.StopServer();
+        }
     }
 }

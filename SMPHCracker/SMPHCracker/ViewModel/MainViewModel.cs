@@ -14,7 +14,6 @@ namespace SMPHCracker.ViewModel
         public SmartphoneViewModel Smartphone { get; set; } = new SmartphoneViewModel();
 
         private ICracker cracker = new Cracker();
-        private volatile bool _getStatusStop;
 
         private string commandInput;
         private string log;
@@ -51,7 +50,7 @@ namespace SMPHCracker.ViewModel
         public ICommand VerifyADBCommand { get; private set; }
         public ICommand ExecuteCommand { get; private set; }
         public ICommand ShowWLANKeysCommand { get; private set; }
-        
+
         #endregion
 
         public MainViewModel()
@@ -62,22 +61,21 @@ namespace SMPHCracker.ViewModel
             ExecuteCommand = new RelayCommand(Execute);
             ShowWLANKeysCommand = new RelayCommand(ShowWLANKeys);
 
-            Thread thread = new Thread(GetStatus);
-            thread.Start();
-
             Smartphone.Bezeichnung = cracker.GetBezeichnung();
+
+            ThreadController.StatusUpdateStart();
 
             ADB.start();
         }
 
-        private void GetStatus()
-        {
-            while (!_getStatusStop)
-            {
-                this.Smartphone.Status = this.cracker.GetStatus();
+        //ivate void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        //
+        //  throw new NotImplementedException();
+        //
 
-                Thread.Sleep(TimeSpan.FromSeconds(3));
-            }
+        public void GetStatus()
+        {
+            this.Smartphone.Status = this.cracker.GetStatus();
         }
 
         //Shell-SU

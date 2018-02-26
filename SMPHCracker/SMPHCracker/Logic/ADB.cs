@@ -152,6 +152,11 @@ namespace SMPHCracker.Logic
             return Getprop("ro.product.brand") + Getprop("ro.product.model");
         }
 
+        public static void StopServer()
+        {
+            ExecuteCommand("adb kill-server");
+        }
+
         //-----
 
         private static String ExecuteCommand(String command)

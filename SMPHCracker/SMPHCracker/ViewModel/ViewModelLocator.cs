@@ -6,11 +6,22 @@ using System.Threading.Tasks;
 
 namespace SMPHCracker.ViewModel
 {
-    public class ViewModelLocator
+    public static class ViewModelLocator
     {
-        public MainViewModel MainView
+
+        static MainViewModel MainViewModel;
+
+        public static MainViewModel MainView
         {
-            get { return new MainViewModel(); }
+            get
+            {
+                if (MainViewModel == null)
+                {
+                    MainViewModel = new MainViewModel();
+                }
+
+                return MainViewModel;
+            }
         }
     }
 }

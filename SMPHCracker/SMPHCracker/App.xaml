@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SMPHCracker"
              xmlns:vm="clr-namespace:SMPHCracker.ViewModel"
-             StartupUri="View\MainView.xaml">
+             StartupUri="View\MainView.xaml"
+             Exit="Application_Exit">
     <Application.Resources>
         <vm:ViewModelLocator x:Key="ViewModelLocator" />
     </Application.Resources>
