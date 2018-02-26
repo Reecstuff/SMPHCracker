@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMPHCracker", "..\..\Übungen\SMPHCracker\SMPHCracker\SMPHCracker.csproj", "{DE95C9DC-85C8-4280-96D8-983CCB10B61F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMPHCracker", "SMPHCracker\SMPHCracker.csproj", "{DE95C9DC-85C8-4280-96D8-983CCB10B61F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DADE63C1-8E8E-4E76-B35E-997EF5DBE4FE}
 	EndGlobalSection
 EndGlobal

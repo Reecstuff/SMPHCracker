@@ -160,8 +160,10 @@ namespace SMPHCracker.Logic
 
             Process Process = Process.Start(ProcessInfo);
 
-            string error = Process.StandardOutput.ReadToEnd();
+            //string error = Process.StandardOutput.ReadToEnd();
             string standard = Process.StandardOutput.ReadToEnd();
+
+            return standard;
 
             return String.IsNullOrEmpty(Process.StandardOutput.ReadToEnd()) ? Process.StandardError.ReadToEnd() : Process.StandardOutput.ReadToEnd() ;
         }
