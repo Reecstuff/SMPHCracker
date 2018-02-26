@@ -61,17 +61,16 @@ namespace SMPHCracker.ViewModel
             ExecuteCommand = new RelayCommand(Execute);
             ShowWLANKeysCommand = new RelayCommand(ShowWLANKeys);
 
-            Smartphone.Bezeichnung = cracker.GetBezeichnung();
+            Smartphone.PropertyChanged += Smartphone_PropertyChanged;
 
             ThreadController.StatusUpdateStart();
-
-            ADB.Start();
         }
 
-        //ivate void CurrentDomain_ProcessExit(object sender, EventArgs e)
-        //
-        //  throw new NotImplementedException();
-        //
+        private void Smartphone_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (string.Equals(e.PropertyName, "Status"))
+                Smartphone.Bezeichnung = cracker.GetBezeichnung();
+        }
 
         public void GetStatus()
         {
@@ -98,7 +97,7 @@ namespace SMPHCracker.ViewModel
 
         private void Execute()
         {
-            Log = $"{Log}{Environment.NewLine}{ADB.Execute(CommandInput)}";
+            Log = $"{Log}{Environment.NewLine}{ADB.Execute(ADBCommands.EXECUTE,CommandInput)}";
         }
 
         private void ShowWLANKeys()

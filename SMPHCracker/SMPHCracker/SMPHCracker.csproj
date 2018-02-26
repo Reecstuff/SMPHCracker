@@ -64,7 +64,8 @@
     <Compile Include="Logic\ADB.cs" />
     <Compile Include="Logic\Cracker.cs" />
     <Compile Include="Logic\ICracker.cs" />
-    <Compile Include="Model\Class1.cs" />
+    <Compile Include="Model\ADBCommands.cs" />
+    <Compile Include="Model\ADBDictionary.cs" />
     <Compile Include="ThreadController.cs" />
     <Compile Include="ViewModel\Helper\RelayCommand.cs" />
     <Compile Include="View\Converter\StatusToColorConverter.cs" />

