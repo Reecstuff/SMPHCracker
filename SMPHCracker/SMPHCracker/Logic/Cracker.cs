@@ -14,11 +14,9 @@ namespace SMPHCracker.Logic
         {
             String output = ADB.Devices();
 
-            output = string.Join(" ", Regex.Split(output, @"(?:\r\n|\n|\r|\t)"));
+            output = String.IsNullOrWhiteSpace(output) ? String.Empty : string.Join(" ", Regex.Split(output, @"(?:\r\n|\n|\r|\t)")).Split(' ')[5];
 
-            String[] split = output.Split(' ');
-
-            switch (split[5])
+            switch (output)
             {
                 case "unauthorized":
                     return Status.Unauthorized;

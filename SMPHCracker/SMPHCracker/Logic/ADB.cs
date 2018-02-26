@@ -11,16 +11,22 @@ namespace SMPHCracker.Logic
     {
         private static String command;
         private static Dictionary<ADBCommands, String> dic = new Dictionary<ADBCommands, string>();
+        private static String path = AppDomain.CurrentDomain.BaseDirectory;
 
-        public static void start()
+
+        public static void Start()
         {
             dic.Add(ADBCommands.DEVICES, "adb devices");
         }
 
         private static ProcessStartInfo ProcessInfo = new ProcessStartInfo
         {
+            /**
+             * Ausführen der adb.exe
+             * Prüfung, ob adb.exe sich im Verzeichnis befindet
+             **/
             FileName = "cmd.exe",
-            WorkingDirectory = System.IO.Path.GetDirectoryName(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName) + "\\adb",
+            WorkingDirectory = System.IO.Path.GetDirectoryName(Directory.Exists(Path.Combine(path,"adb")) ? Path.Combine(path,"adb") : Path.Combine(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName, "adb")),
             RedirectStandardOutput = true,
             UseShellExecute = false,
             CreateNoWindow = true
@@ -28,7 +34,7 @@ namespace SMPHCracker.Logic
 
         //----- Commands
 
-        public static string test(ADBCommands command, params string[] str)
+        public static string Test(ADBCommands command, params string[] str)
         {
             return ExecuteCommand(String.Join(" ",dic[command],String.Join(" ",str)));
         }
@@ -170,7 +176,7 @@ namespace SMPHCracker.Logic
 
             return standard;
 
-            return String.IsNullOrEmpty(Process.StandardOutput.ReadToEnd()) ? Process.StandardError.ReadToEnd() : Process.StandardOutput.ReadToEnd() ;
+            //return String.IsNullOrEmpty(Process.StandardOutput.ReadToEnd()) ? Process.StandardError.ReadToEnd() : Process.StandardOutput.ReadToEnd() ;
         }
 
         //public static void Test()

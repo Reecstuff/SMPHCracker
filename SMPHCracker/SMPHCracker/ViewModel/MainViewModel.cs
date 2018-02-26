@@ -65,7 +65,7 @@ namespace SMPHCracker.ViewModel
 
             ThreadController.StatusUpdateStart();
 
-            ADB.start();
+            ADB.Start();
         }
 
         //ivate void CurrentDomain_ProcessExit(object sender, EventArgs e)
@@ -106,9 +106,9 @@ namespace SMPHCracker.ViewModel
             Log = $"{Log}{Environment.NewLine}{cracker.ShowWLANKeys(this.Smartphone.Status)}";
         }
 
-        private void RequestStop()
-        {
-            _getStatusStop = true;
-        }
+        //private void RequestStop()
+        //{
+        //    _getStatusStop = true;
+        //}
     }
 }
