@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMPHCracker", "SMPHCracker\SMPHCracker.csproj", "{55DBFEBD-AC1B-445A-9639-F7AAFC4F8095}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMPHCracker", "..\..\Übungen\SMPHCracker\SMPHCracker\SMPHCracker.csproj", "{DE95C9DC-85C8-4280-96D8-983CCB10B61F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{55DBFEBD-AC1B-445A-9639-F7AAFC4F8095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55DBFEBD-AC1B-445A-9639-F7AAFC4F8095}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55DBFEBD-AC1B-445A-9639-F7AAFC4F8095}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55DBFEBD-AC1B-445A-9639-F7AAFC4F8095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE95C9DC-85C8-4280-96D8-983CCB10B61F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE95C9DC-85C8-4280-96D8-983CCB10B61F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE95C9DC-85C8-4280-96D8-983CCB10B61F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE95C9DC-85C8-4280-96D8-983CCB10B61F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
