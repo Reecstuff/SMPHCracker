@@ -28,24 +28,11 @@ namespace SMPHCracker.Logic
 
         public static string Execute(ADBCommands command, params string[] str)
         {
+            if(command == ADBCommands.SHELLROOT || command == ADBCommands.SETPROP)
+                str = (str ?? Enumerable.Empty<string>()).Concat(Enumerable.Repeat("'\"", 1)).ToArray();
+
             return ExecuteCommand(String.Join(" ",dic[command],String.Join(" ",str)));
         }
-
-        //----- Shell
-        //Needed for SHELL-ROOT, TODO - FIX
-        public static String Shell(String befehl, Boolean root)    //shell              + Befehl
-        {
-            if (!root)
-            {
-                return ExecuteCommand("adb shell " + befehl);
-            }
-            else
-            {
-                return ExecuteCommand("adb shell \"su -c '" + befehl + "'\"");
-            }
-        }
-
-        //-----
 
         private static String ExecuteCommand(String command)
         {

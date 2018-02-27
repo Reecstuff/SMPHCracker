@@ -25,10 +25,9 @@ namespace SMPHCracker.Model
             dic.Add(ADBCommands.INSTALL, "adb install");
 
             dic.Add(ADBCommands.SHELL, "adb shell");
-            //TODO - fix SU-Problem
-            dic.Add(ADBCommands.SHELLROOT, $"adb shell \"su -c '[BEFEHL]'\"");
+            dic.Add(ADBCommands.SHELLROOT, "adb shell \"su -c '");
             dic.Add(ADBCommands.GETPROP, "adb shell getprop");
-            dic.Add(ADBCommands.SETPROP, $"adb shell \"su -c 'setprop [TAG] [PROP]'\"");
+            dic.Add(ADBCommands.SETPROP, "adb shell \"su -c 'setprop");
 
             dic.Add(ADBCommands.STOPSERVER, "adb kill-server");
 

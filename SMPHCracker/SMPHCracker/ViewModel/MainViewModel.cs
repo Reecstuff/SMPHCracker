@@ -104,10 +104,5 @@ namespace SMPHCracker.ViewModel
         {
             Log = $"{Log}{Environment.NewLine}{cracker.ShowWLANKeys(this.Smartphone.Status)}";
         }
-
-        //private void RequestStop()
-        //{
-        //    _getStatusStop = true;
-        //}
     }
 }
