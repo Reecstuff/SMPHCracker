@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace SMPHCracker.Logic
 {
-    //TODO - check successfuly operation
     class Cracker : ICracker
     {
         public Status GetStatus()
@@ -52,20 +51,38 @@ namespace SMPHCracker.Logic
             switch (status)
             {
                 case Status.Root:
-                    ADB.Execute(ADBCommands.SHELLROOT, "mount data");
+                    //Check if .key file exists
+                    if (!(ADB.Execute(ADBCommands.SHELLROOT, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("true")))
+                        return false;
+
+                     ADB.Execute(ADBCommands.SHELLROOT, "mount data");
                     //Remove LockScreen
                     ADB.Execute(ADBCommands.SHELLROOT, "rm /data/system/*.key");
-                    //Reset LockSettings
+                    //Reset LockSettings (optional -> prevent crash in Phone-Settings)
                     ADB.Execute(ADBCommands.SHELLROOT, "rm /data/system/locksettings*");
-                    return true;
+
+                    //Check if .key file not exists
+                    if (ADB.Execute(ADBCommands.SHELLROOT, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("false"))
+                        return true;
+                    else
+                        return false;
 
                 case Status.Recovery:
+                    //Check if .key file exists
+                    if (!(ADB.Execute(ADBCommands.SHELL, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("true")))
+                        return false;
+
                     ADB.Execute(ADBCommands.SHELL, "mount data");
                     //Remove LockScreen
                     ADB.Execute(ADBCommands.SHELL, "rm /data/system/*.key");
-                    //Reset LockSettings
+                    //Reset LockSettings (optional -> prevent crash in Phone-Settings)
                     ADB.Execute(ADBCommands.SHELL, "rm /data/system/locksettings*");
-                    return true;
+
+                    //Check if .key file not exists
+                    if (ADB.Execute(ADBCommands.SHELL, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("false"))
+                        return true;
+                    else
+                        return false;
 
                 case Status.Sideload:
                     return RemovePasswordSideload();
@@ -79,19 +96,20 @@ namespace SMPHCracker.Logic
             return false;
         }
 
-        //Recovery-Shell-Mode
         public bool EnableADB(Status status)
         {
             switch (status)
             {
                 case Status.Recovery:
+                    //TODO - check if enabling ADB was successfully
+
                     //Add ADB-Settings
                     ADB.Execute(ADBCommands.SHELL, "mount data");
                     ADB.Execute(ADBCommands.SHELL, "\"echo -n 'mtp,adb' > /data/property/persist.sys.usb.config\"");
                     //Activates ADB-Settings
                     ADB.Execute(ADBCommands.SHELL, "mount system");
                     ADB.Execute(ADBCommands.SHELL, "\"echo '' >> /system/build.prop\"");
-                    ADB.Execute(ADBCommands.SHELL, "\"echo '# Enable ADB\' >> /system/build.prop\"");
+                    ADB.Execute(ADBCommands.SHELL, "\"echo '#Enable ADB with Cracker \' >> /system/build.prop\"");
                     ADB.Execute(ADBCommands.SHELL, "\"echo 'persist.service.ADB.enable=1' >> /system/build.prop\"");
                     ADB.Execute(ADBCommands.SHELL, "\"echo 'persist.service.debuggable=1' >> /system/build.prop\"");
                     ADB.Execute(ADBCommands.SHELL, "\"echo 'persist.sys.usb.config=mtp,adb' >> /system/build.prop\"");
@@ -115,6 +133,7 @@ namespace SMPHCracker.Logic
             if (status == Status.Recovery)
             {
                 //TODO - get adkey.pub from folder .android
+                //TODO - check if vertifying PC was successfully
 
                 //Vertify PC for ADB
                 ADB.Execute(ADBCommands.PUSH, @"C:\Users\ErdnüßFrederic\.android\adbkey.pub", "/data/misc/adb/adb_keys");
