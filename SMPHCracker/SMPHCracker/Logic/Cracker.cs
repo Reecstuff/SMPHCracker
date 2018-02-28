@@ -12,7 +12,18 @@ namespace SMPHCracker.Logic
     {
         public Status GetStatus()
         {
+            //TODO Dictionary Declaration need to be somewhere else
+            Dictionary<String,Status> dic = new StatusDictionary().GetStatusDictionary();
+
             String output = ADB.Execute(ADBCommands.DEVICES);
+
+            //Auslesen des Status aus dem output
+            Status status = dic[dic.Keys.Where(k => Regex.IsMatch(output, @"(" + k + ")")).ToString()];
+
+            //Status überprüfen
+            status = status != Status.Root ? status : Regex.IsMatch(ADB.Execute(ADBCommands.SHELLROOT),@"?(error) error| denied") ? Status.ADB : status;
+
+            return status;
 
             //TODO - use LINQ to cut out -> device || unauthorized || recovery || sideload
             output = String.IsNullOrWhiteSpace(output) ? String.Empty : string.Join(" ", Regex.Split(output, @"(?:\r\n|\n|\r|\t)")).Split(' ')[5];

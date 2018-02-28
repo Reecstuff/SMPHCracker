@@ -13,7 +13,8 @@ namespace SMPHCracker.ViewModel
         #region Variables
         public SmartphoneViewModel Smartphone { get; set; } = new SmartphoneViewModel();
 
-        private ICracker cracker = new Cracker();
+        //Switch to TestCracker if possible
+        private ICracker cracker = new TestCracker();
 
         private string commandInput;
         private string log;

@@ -66,6 +66,7 @@
     <Compile Include="Logic\ICracker.cs" />
     <Compile Include="Model\ADBCommands.cs" />
     <Compile Include="Model\ADBDictionary.cs" />
+    <Compile Include="Model\StatusDictionary.cs" />
     <Compile Include="ThreadController.cs" />
     <Compile Include="ViewModel\Helper\RelayCommand.cs" />
     <Compile Include="View\Converter\StatusToColorConverter.cs" />
