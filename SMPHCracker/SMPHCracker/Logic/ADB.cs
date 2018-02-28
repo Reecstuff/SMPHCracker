@@ -28,9 +28,13 @@ namespace SMPHCracker.Logic
 
         public static string Execute(ADBCommands command, params string[] str)
         {
-            if(command == ADBCommands.SHELLROOT || command == ADBCommands.SETPROP)
-                str = (str ?? Enumerable.Empty<string>()).Concat(Enumerable.Repeat("'\"", 1)).ToArray();
-
+            /**
+             * Prüfen des Commands
+             * Einfügen der Zeichenfolge an den Anfang
+             **/
+            if (command == ADBCommands.SHELLROOT || command == ADBCommands.SETPROP)
+                //str = (str ?? Enumerable.Empty<string>()).Concat(Enumerable.Repeat("'\"", 1)).ToArray();
+                str.SetValue("'\"",0);
             return ExecuteCommand(String.Join(" ",dic[command],String.Join(" ",str)));
         }
 
