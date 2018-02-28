@@ -33,8 +33,10 @@ namespace SMPHCracker.Logic
              * Einfügen der Zeichenfolge an den Anfang
              **/
             if (command == ADBCommands.SHELLROOT || command == ADBCommands.SETPROP)
-                //str = (str ?? Enumerable.Empty<string>()).Concat(Enumerable.Repeat("'\"", 1)).ToArray();
-                str.SetValue("'\"",0);
+                str = (str ?? Enumerable.Empty<string>()).Concat(Enumerable.Repeat("'\"", 1)).ToArray();
+                
+                //Didn't work!
+                //str.SetValue("'\"",0);
             return ExecuteCommand(String.Join(" ",dic[command],String.Join(" ",str)));
         }
 

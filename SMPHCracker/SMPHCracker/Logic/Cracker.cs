@@ -17,39 +17,51 @@ namespace SMPHCracker.Logic
 
             String output = ADB.Execute(ADBCommands.DEVICES);
 
-            //Auslesen des Status aus dem output
-            Status status = dic[dic.Keys.Where(k => Regex.IsMatch(output, @"(" + k + ")")).ToString()];
+            dic.TryGetValue(dic.Keys.FirstOrDefault(k => output.Contains($"{k}\r")) ?? "nodevice", out Status status);
 
-            //Status überprüfen
-            status = status != Status.Root ? status : Regex.IsMatch(ADB.Execute(ADBCommands.SHELLROOT),@"?(error) error| denied") ? Status.ADB : status;
+            return status != Status.ADB ? status : ADB.Execute(ADBCommands.SHELLROOT).Contains("denied") ? Status.ADB : Status.Root;
 
-            return status;
+            //Didn't work!
+            //Christian
+            //String output = ADB.Execute(ADBCommands.DEVICES);
+            //
+            ////Auslesen des Status aus dem output
+            //Status status = dic[dic.Keys.FirstOrDefault(k => Regex.IsMatch(output, @"(" + k + ")")).ToString()];
+            //
+            ////Status überprüfen
+            //status = status != Status.Root ? status : Regex.IsMatch(ADB.Execute(ADBCommands.SHELLROOT),@"?(error) error| denied") ? Status.ADB : status;
+            //
+            //return status;
 
-            //TODO - use LINQ to cut out -> device || unauthorized || recovery || sideload
-            output = String.IsNullOrWhiteSpace(output) ? String.Empty : string.Join(" ", Regex.Split(output, @"(?:\r\n|\n|\r|\t)")).Split(' ')[5];
 
-            switch (output)
-            {
-                case "unauthorized":
-                    return Status.Unauthorized;
-
-                case "device":
-                    output = ADB.Execute(ADBCommands.SHELLROOT); 
-
-                    if(output.Contains("error") || output.Contains("denied"))
-                        return Status.ADB;
-                    else
-                        return Status.Root;
-
-                case "recovery":
-                    return Status.Recovery;
-
-                case "sideload":
-                    return Status.Sideload;
-
-                default:
-                    return Status.NoDevice;
-            }
+            //Alt
+            //String output = ADB.Execute(ADBCommands.DEVICES);
+            //
+            ////TODO - use LINQ to cut out -> device || unauthorized || recovery || sideload
+            //output = String.IsNullOrWhiteSpace(output) ? String.Empty : string.Join(" ", Regex.Split(output, @"(?:\r\n|\n|\r|\t)")).Split(' ')[5];
+            //
+            //switch (output)
+            //{
+            //    case "unauthorized":
+            //        return Status.Unauthorized;
+            //
+            //    case "device":
+            //        output = ADB.Execute(ADBCommands.SHELLROOT); 
+            //
+            //        if(output.Contains("error") || output.Contains("denied"))
+            //            return Status.ADB;
+            //        else
+            //            return Status.Root;
+            //
+            //    case "recovery":
+            //        return Status.Recovery;
+            //
+            //    case "sideload":
+            //        return Status.Sideload;
+            //
+            //    default:
+            //        return Status.NoDevice;
+            //}
         }
 
         public string GetBezeichnung()

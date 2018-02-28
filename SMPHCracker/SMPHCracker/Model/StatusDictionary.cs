@@ -8,15 +8,15 @@ namespace SMPHCracker.Model
 {
     class StatusDictionary
     {
-        private Dictionary<String, Status> dictionary;
+        private Dictionary<String, Status> dictionary = new Dictionary<string, Status>();
 
         public StatusDictionary()
         {
             Add("unauthorized", Status.Unauthorized);
-            Add("device", Status.Root);
+            Add("device", Status.ADB);
             Add("recovery", Status.Recovery);
             Add("sideload", Status.Sideload);
-      
+            Add("nodevice", Status.NoDevice);
         }
 
         private void Add(String s, Status st)
