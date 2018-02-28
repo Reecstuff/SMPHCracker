@@ -10,13 +10,14 @@ namespace SMPHCracker.Logic
     class TestCracker : ICracker
     {
         //TODO Auswahl an returns
-        private Status status = Status.ADB;
+        //private Status status = Status.ADB;
         private string bezeichnung = "TestSmartphone";
 
         public Status GetStatus()
         {
             //TODO Eingabe oder Random
-            int index = 2;
+            //Umwandlung in Integer für spätere Eingabe
+            int index = (int)Status.ADB;
             return (Status)Enum.ToObject(typeof(Status), index);
         }
 
