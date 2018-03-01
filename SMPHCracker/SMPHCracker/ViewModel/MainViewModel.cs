@@ -52,6 +52,9 @@ namespace SMPHCracker.ViewModel
         public ICommand ExecuteCommand { get; private set; }
         public ICommand ShowWLANKeysCommand { get; private set; }
 
+        public ICommand ArrowUpCommand { get; private set; }
+        public ICommand ArrowDownCommand { get; private set; }
+
         #endregion
 
         public MainViewModel()
@@ -62,9 +65,28 @@ namespace SMPHCracker.ViewModel
             ExecuteCommand = new RelayCommand(Execute);
             ShowWLANKeysCommand = new RelayCommand(ShowWLANKeys);
 
+            ArrowUpCommand = new RelayCommand(IncreaseStatus);
+            ArrowDownCommand = new RelayCommand(DecreaseStatus);
+
             Smartphone.PropertyChanged += Smartphone_PropertyChanged;
 
             ThreadController.StatusUpdateStart();
+        }
+
+        private void IncreaseStatus()
+        {
+            if (cracker is TestCracker)
+            {
+                (cracker as TestCracker).IncreaseStatus(true);
+            }
+        }
+
+        private void DecreaseStatus()
+        {
+            if (cracker is TestCracker)
+            {
+                (cracker as TestCracker).IncreaseStatus(false);
+            }
         }
 
         private void Smartphone_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

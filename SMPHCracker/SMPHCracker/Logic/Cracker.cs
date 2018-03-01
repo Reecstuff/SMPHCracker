@@ -15,53 +15,14 @@ namespace SMPHCracker.Logic
             //TODO Dictionary Declaration need to be somewhere else
             Dictionary<String,Status> dic = new StatusDictionary().GetStatusDictionary();
 
+            Status status;
+
             String output = ADB.Execute(ADBCommands.DEVICES);
 
-            dic.TryGetValue(dic.Keys.FirstOrDefault(k => output.Contains($"{k}\r")) ?? "nodevice", out Status status);
+            dic.TryGetValue(dic.Keys.FirstOrDefault(k => output.Contains($"{k}\r")) ?? "nodevice", out status);
 
-            return status != Status.ADB ? status : ADB.Execute(ADBCommands.SHELLROOT).Contains("denied") ? Status.ADB : Status.Root;
-
-            //Didn't work!
-            //Christian
-            //String output = ADB.Execute(ADBCommands.DEVICES);
-            //
-            ////Auslesen des Status aus dem output
-            //Status status = dic[dic.Keys.FirstOrDefault(k => Regex.IsMatch(output, @"(" + k + ")")).ToString()];
-            //
-            ////Status überprüfen
-            //status = status != Status.Root ? status : Regex.IsMatch(ADB.Execute(ADBCommands.SHELLROOT),@"?(error) error| denied") ? Status.ADB : status;
-            //
-            //return status;
-
-
-            //Alt
-            //String output = ADB.Execute(ADBCommands.DEVICES);
-            //
-            ////TODO - use LINQ to cut out -> device || unauthorized || recovery || sideload
-            //output = String.IsNullOrWhiteSpace(output) ? String.Empty : string.Join(" ", Regex.Split(output, @"(?:\r\n|\n|\r|\t)")).Split(' ')[5];
-            //
-            //switch (output)
-            //{
-            //    case "unauthorized":
-            //        return Status.Unauthorized;
-            //
-            //    case "device":
-            //        output = ADB.Execute(ADBCommands.SHELLROOT); 
-            //
-            //        if(output.Contains("error") || output.Contains("denied"))
-            //            return Status.ADB;
-            //        else
-            //            return Status.Root;
-            //
-            //    case "recovery":
-            //        return Status.Recovery;
-            //
-            //    case "sideload":
-            //        return Status.Sideload;
-            //
-            //    default:
-            //        return Status.NoDevice;
-            //}
+            return status != Status.ADB ? status : (output = ADB.Execute(ADBCommands.SHELLROOT)).Contains("denied") || output.Contains("error") ? Status.ADB : Status.Root;       
+   
         }
 
         public string GetBezeichnung()
@@ -188,7 +149,7 @@ namespace SMPHCracker.Logic
                     return ADB.Execute(ADBCommands.SHELL, "cat /data/misc/wifi/wpa_supplicant.conf");
 
                 default:
-                    return "false";
+                    return "No wlan keys detected!";
             }
         }
     }

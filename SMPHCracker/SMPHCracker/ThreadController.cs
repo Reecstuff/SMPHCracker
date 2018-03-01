@@ -24,7 +24,7 @@ namespace SMPHCracker
             {
                 ViewModelLocator.MainView.GetStatus();
 
-                Thread.Sleep(TimeSpan.FromSeconds(3));
+                Thread.Sleep(TimeSpan.FromMilliseconds(3));
             }
         }
         public static void StatusUpdateStop()

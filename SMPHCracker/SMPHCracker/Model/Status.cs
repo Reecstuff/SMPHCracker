@@ -8,11 +8,11 @@ namespace SMPHCracker.Model
 {
     public enum Status
     {
-        NoDevice = 0,
-        Unauthorized = 1,
-        ADB = 2,
-        Root = 32,       // + ADB
-        Recovery = 432,    // + Root
-        Sideload = 5
+        NoDevice,
+        Unauthorized,
+        ADB,
+        Root,       // + ADB
+        Recovery,    // + Root
+        Sideload
     }
 }

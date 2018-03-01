@@ -19,7 +19,7 @@ namespace SMPHCracker.Logic
              * Prüfung, ob adb.exe sich im Verzeichnis befindet
              **/
             FileName = "cmd.exe",
-            WorkingDirectory = System.IO.Path.GetDirectoryName(Directory.Exists(Path.Combine(path, "adb")) ? Path.Combine(path, "adb") : Path.Combine(new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName, "adb")),
+            WorkingDirectory = Directory.Exists(Path.Combine(path, "adb")) ? Path.Combine(path, "adb") : Path.Combine(new DirectoryInfo(path).Parent.Parent.FullName, "adb"),
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,

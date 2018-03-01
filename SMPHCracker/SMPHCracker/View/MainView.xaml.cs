@@ -24,5 +24,15 @@ namespace SMPHCracker.View
         {
             InitializeComponent();
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(sender != null)
+            {
+                var textBox = sender as TextBox;
+
+                textBox.ScrollToEnd();
+            }
+        }
     }
 }
