@@ -35,8 +35,6 @@ namespace SMPHCracker.Logic
             if (command == ADBCommands.SHELLROOT || command == ADBCommands.SETPROP)
                 str = (str ?? Enumerable.Empty<string>()).Concat(Enumerable.Repeat("'\"", 1)).ToArray();
                 
-                //Didn't work!
-                //str.SetValue("'\"",0);
             return ExecuteCommand(String.Join(" ",dic[command],String.Join(" ",str)));
         }
 

@@ -77,7 +77,7 @@ namespace SMPHCracker.ViewModel
         {
             if (cracker is TestCracker)
             {
-                (cracker as TestCracker).IncreaseStatus(true);
+                (cracker as TestCracker).IncrementStatus();
             }
         }
 
@@ -85,7 +85,7 @@ namespace SMPHCracker.ViewModel
         {
             if (cracker is TestCracker)
             {
-                (cracker as TestCracker).IncreaseStatus(false);
+                (cracker as TestCracker).DecrementStatus();
             }
         }
 
@@ -121,6 +121,7 @@ namespace SMPHCracker.ViewModel
         private void Execute()
         {
             Log = $"{Log}{Environment.NewLine}{ADB.Execute(ADBCommands.EXECUTE,CommandInput)}";
+            CommandInput = String.Empty;
         }
 
         private void ShowWLANKeys()
