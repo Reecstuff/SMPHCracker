@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SMPHCracker.Logic
 {
     static class ADB
     {
-        private static Dictionary<ADBCommands, String> dic = new ADBDictionary().GetDictionary();
         private static String path = AppDomain.CurrentDomain.BaseDirectory;
 
         private static ProcessStartInfo ProcessInfo = new ProcessStartInfo
@@ -26,19 +27,7 @@ namespace SMPHCracker.Logic
             CreateNoWindow = true
         };
 
-        public static string Execute(ADBCommands command, params string[] str)
-        {
-            /**
-             * Prüfen des Commands
-             * Einfügen der Zeichenfolge an den Anfang
-             **/
-            if (command == ADBCommands.SHELLROOT || command == ADBCommands.SETPROP)
-                str = (str ?? Enumerable.Empty<string>()).Concat(Enumerable.Repeat("'\"", 1)).ToArray();
-                
-            return ExecuteCommand(String.Join(" ",dic[command],String.Join(" ",str)));
-        }
-
-        private static String ExecuteCommand(String command)
+        public static string ExecuteCommand(String command)
         {
             ProcessInfo.Arguments = "/C " + command;
 
@@ -46,7 +35,7 @@ namespace SMPHCracker.Logic
 
             string error = Process.StandardError.ReadToEnd();
 
-            return String.IsNullOrEmpty(error) ? Process.StandardOutput.ReadToEnd() : error ;
+            return String.IsNullOrEmpty(error) ? Process.StandardOutput.ReadToEnd() : error;
         }
     }
 }

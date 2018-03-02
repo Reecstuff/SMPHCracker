@@ -14,7 +14,7 @@ namespace SMPHCracker.ViewModel
         public SmartphoneViewModel Smartphone { get; set; } = new SmartphoneViewModel();
 
         //Switch to TestCracker if possible
-        private ICracker cracker = new TestCracker();
+        private ICracker cracker = new Cracker();
 
         private string commandInput;
         private string log;
@@ -92,41 +92,57 @@ namespace SMPHCracker.ViewModel
         private void Smartphone_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (string.Equals(e.PropertyName, "Status"))
-                Smartphone.Bezeichnung = cracker.GetBezeichnung();
+            {
+                switch (Smartphone.Status)
+                {
+                    case Status.NoDevice: case Status.Unauthorized:
+                        Smartphone.Bezeichnung = string.Empty;
+                        break;
+
+                    case Status.ADB: case Status.Root: case Status.Recovery: case Status.Sideload:
+                        Smartphone.Bezeichnung = cracker.GetBezeichnung();
+                        break;
+
+                    default:
+                        Smartphone.Bezeichnung = string.Empty;
+                        break;
+                }
+            } 
         }
 
         public void GetStatus()
         {
-            this.Smartphone.Status = this.cracker.GetStatus();
+            Smartphone.Status = cracker.GetStatus();
         }
 
-        //Shell-SU
         private void RemovePassoword()
         {
-            bool action = cracker.RemovePassoword(this.Smartphone.Status);
+            bool action = cracker.RemovePassoword(Smartphone.Status);
         }
 
-        //Recovery-Shell-Mode
         private void EnableADB()
         {
-            bool action = cracker.EnableADB(this.Smartphone.Status);
+            bool action = cracker.EnableADB(Smartphone.Status);
         }
 
-        //ADB-SU Mode
         private void VerifyADB()
         {
-            bool action = cracker.VerifyADB(this.Smartphone.Status);
+            bool action = cracker.VerifyADB(Smartphone.Status);
         }
 
         private void Execute()
         {
-            Log = $"{Log}{Environment.NewLine}{ADB.Execute(ADBCommands.EXECUTE,CommandInput)}";
-            CommandInput = String.Empty;
+            //Prevents suspending because of incorrectly Shell-commands
+            ThreadController.ExecuteCommandThread(() =>
+            {
+                Log = $"{Log}{Environment.NewLine}{cracker.Execute(ADBCommands.EXECUTE, CommandInput)}";
+                CommandInput = String.Empty;
+            });
         }
 
         private void ShowWLANKeys()
         {
-            Log = $"{Log}{Environment.NewLine}{cracker.ShowWLANKeys(this.Smartphone.Status)}";
+            Log = $"{Log}{Environment.NewLine}{cracker.ShowWLANKeys(Smartphone.Status)}";
         }
     }
 }

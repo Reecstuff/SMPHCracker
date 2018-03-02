@@ -33,6 +33,11 @@ namespace SMPHCracker.Logic
                 status = Status.Sideload;
         }
 
+        public string Execute(ADBCommands command, params string[] str)
+        {
+            return "Ausgeführt!";
+        }
+
         public string GetBezeichnung()
         {
             return bezeichnung;

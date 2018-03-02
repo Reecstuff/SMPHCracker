@@ -17,8 +17,9 @@ namespace SMPHCracker
     {
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            ThreadController.StatusUpdateStop();
-            ADB.Execute(ADBCommands.STOPSERVER);
+            new Cracker().Execute(ADBCommands.STOPSERVER);
+
+            ThreadController.StopAllThreads();       
         }
     }
 }

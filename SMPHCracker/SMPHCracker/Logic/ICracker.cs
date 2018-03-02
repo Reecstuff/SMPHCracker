@@ -11,6 +11,8 @@ namespace SMPHCracker.Logic
     {
         Status GetStatus();
 
+        string Execute(ADBCommands command, params string[] str);
+
         string GetBezeichnung();
 
         //ShellSu

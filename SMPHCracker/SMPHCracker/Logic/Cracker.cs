@@ -10,24 +10,37 @@ namespace SMPHCracker.Logic
 {
     class Cracker : ICracker
     {
+        private Dictionary<ADBCommands, String> adbDictionary = new ADBDictionary().GetDictionary();
+        private Dictionary<String, Status> statusDictionary = new StatusDictionary().GetStatusDictionary();
+
         public Status GetStatus()
         {
-            //TODO Dictionary Declaration need to be somewhere else
-            Dictionary<String,Status> dic = new StatusDictionary().GetStatusDictionary();
-
             Status status;
 
-            String output = ADB.Execute(ADBCommands.DEVICES);
+            String output = Execute(ADBCommands.DEVICES);
 
-            dic.TryGetValue(dic.Keys.FirstOrDefault(k => output.Contains($"{k}\r")) ?? "nodevice", out status);
+            statusDictionary.TryGetValue(statusDictionary.Keys.FirstOrDefault(k => output.Contains($"{k}\r")) ?? "nodevice", out status);
 
-            return status != Status.ADB ? status : (output = ADB.Execute(ADBCommands.SHELLROOT)).Contains("denied") || output.Contains("error") ? Status.ADB : Status.Root;       
+            return status != Status.ADB ? status : (output = Execute(ADBCommands.SHELLROOT)).Contains("denied") || output.Contains("error") ? Status.ADB : Status.Root;       
    
         }
 
+        public string Execute(ADBCommands command, params string[] str)
+        {
+            /**
+             * Prüfen des Commands
+             * Einfügen der Zeichenfolge an den Anfang
+             **/
+            if (command == ADBCommands.SHELLROOT || command == ADBCommands.SETPROP)
+                str = (str ?? Enumerable.Empty<string>()).Concat(Enumerable.Repeat("'\"", 1)).ToArray();
+
+            return ADB.ExecuteCommand(String.Join(" ", adbDictionary[command], String.Join(" ", str)));
+        }
+
+
         public string GetBezeichnung()
         {
-            return $"{ADB.Execute(ADBCommands.GETPROP, "ro.product.brand")} {ADB.Execute(ADBCommands.GETPROP, "ro.product.model")}";
+            return $"{Execute(ADBCommands.GETPROP, "ro.product.brand")} {Execute(ADBCommands.GETPROP, "ro.product.model")}";
         }
 
         public bool RemovePassoword(Status status)
@@ -36,34 +49,34 @@ namespace SMPHCracker.Logic
             {
                 case Status.Root:
                     //Check if .key file exists
-                    if (!(ADB.Execute(ADBCommands.SHELLROOT, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("true")))
+                    if (!(Execute(ADBCommands.SHELLROOT, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("true")))
                         return false;
 
-                     ADB.Execute(ADBCommands.SHELLROOT, "mount data");
+                     Execute(ADBCommands.SHELLROOT, "mount data");
                     //Remove LockScreen
-                    ADB.Execute(ADBCommands.SHELLROOT, "rm /data/system/*.key");
+                    Execute(ADBCommands.SHELLROOT, "rm /data/system/*.key");
                     //Reset LockSettings (optional -> prevent crash in Phone-Settings)
-                    ADB.Execute(ADBCommands.SHELLROOT, "rm /data/system/locksettings*");
+                    Execute(ADBCommands.SHELLROOT, "rm /data/system/locksettings*");
 
                     //Check if .key file not exists
-                    if (ADB.Execute(ADBCommands.SHELLROOT, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("false"))
+                    if (Execute(ADBCommands.SHELLROOT, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("false"))
                         return true;
                     else
                         return false;
 
                 case Status.Recovery:
                     //Check if .key file exists
-                    if (!(ADB.Execute(ADBCommands.SHELL, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("true")))
+                    if (!(Execute(ADBCommands.SHELL, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("true")))
                         return false;
 
-                    ADB.Execute(ADBCommands.SHELL, "mount data");
+                    Execute(ADBCommands.SHELL, "mount data");
                     //Remove LockScreen
-                    ADB.Execute(ADBCommands.SHELL, "rm /data/system/*.key");
+                    Execute(ADBCommands.SHELL, "rm /data/system/*.key");
                     //Reset LockSettings (optional -> prevent crash in Phone-Settings)
-                    ADB.Execute(ADBCommands.SHELL, "rm /data/system/locksettings*");
+                    Execute(ADBCommands.SHELL, "rm /data/system/locksettings*");
 
                     //Check if .key file not exists
-                    if (ADB.Execute(ADBCommands.SHELL, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("false"))
+                    if (Execute(ADBCommands.SHELL, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("false"))
                         return true;
                     else
                         return false;
@@ -88,15 +101,15 @@ namespace SMPHCracker.Logic
                     //TODO - check if enabling ADB was successfully
 
                     //Add ADB-Settings
-                    ADB.Execute(ADBCommands.SHELL, "mount data");
-                    ADB.Execute(ADBCommands.SHELL, "\"echo -n 'mtp,adb' > /data/property/persist.sys.usb.config\"");
+                    Execute(ADBCommands.SHELL, "mount data");
+                    Execute(ADBCommands.SHELL, "\"echo -n 'mtp,adb' > /data/property/persist.sys.usb.config\"");
                     //Activates ADB-Settings
-                    ADB.Execute(ADBCommands.SHELL, "mount system");
-                    ADB.Execute(ADBCommands.SHELL, "\"echo '' >> /system/build.prop\"");
-                    ADB.Execute(ADBCommands.SHELL, "\"echo '#Enable ADB with Cracker \' >> /system/build.prop\"");
-                    ADB.Execute(ADBCommands.SHELL, "\"echo 'persist.service.ADB.enable=1' >> /system/build.prop\"");
-                    ADB.Execute(ADBCommands.SHELL, "\"echo 'persist.service.debuggable=1' >> /system/build.prop\"");
-                    ADB.Execute(ADBCommands.SHELL, "\"echo 'persist.sys.usb.config=mtp,adb' >> /system/build.prop\"");
+                    Execute(ADBCommands.SHELL, "mount system");
+                    Execute(ADBCommands.SHELL, "\"echo '' >> /system/build.prop\"");
+                    Execute(ADBCommands.SHELL, "\"echo '#Enable ADB with Cracker \' >> /system/build.prop\"");
+                    Execute(ADBCommands.SHELL, "\"echo 'persist.service.ADB.enable=1' >> /system/build.prop\"");
+                    Execute(ADBCommands.SHELL, "\"echo 'persist.service.debuggable=1' >> /system/build.prop\"");
+                    Execute(ADBCommands.SHELL, "\"echo 'persist.sys.usb.config=mtp,adb' >> /system/build.prop\"");
 
                     return true;
 
@@ -120,7 +133,7 @@ namespace SMPHCracker.Logic
                 //TODO - check if vertifying PC was successfully
 
                 //Vertify PC for ADB
-                ADB.Execute(ADBCommands.PUSH, @"C:\Users\ErdnüßFrederic\.android\adbkey.pub", "/data/misc/adb/adb_keys");
+                Execute(ADBCommands.PUSH, @"C:\Users\ErdnüßFrederic\.android\adbkey.pub", "/data/misc/adb/adb_keys");
 
                 return true;
             }
@@ -142,11 +155,11 @@ namespace SMPHCracker.Logic
             {
                 case Status.Root:
                     //Show WLAN-Keys
-                    return ADB.Execute(ADBCommands.SHELLROOT, "cat /data/misc/wifi/wpa_supplicant.conf");
+                    return Execute(ADBCommands.SHELLROOT, "cat /data/misc/wifi/wpa_supplicant.conf");
 
                 case Status.Recovery:
                     //Show WLAN-Keys
-                    return ADB.Execute(ADBCommands.SHELL, "cat /data/misc/wifi/wpa_supplicant.conf");
+                    return Execute(ADBCommands.SHELL, "cat /data/misc/wifi/wpa_supplicant.conf");
 
                 default:
                     return "No wlan keys detected!";
