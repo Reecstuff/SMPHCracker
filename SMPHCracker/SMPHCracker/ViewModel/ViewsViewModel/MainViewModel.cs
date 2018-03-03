@@ -1,12 +1,11 @@
 ﻿using SMPHCracker.Logic;
-using SMPHCracker.Model;
+using SMPHCracker.Model.Enums;
 using SMPHCracker.ViewModel.Helper;
+using SMPHCracker.ViewModel.ModelsViewModel;
 using System;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Input;
 
-namespace SMPHCracker.ViewModel
+namespace SMPHCracker.ViewModel.ViewsViewModel
 {
     public class MainViewModel : NotifyPropertyChanged
     {
@@ -68,9 +67,34 @@ namespace SMPHCracker.ViewModel
             ArrowUpCommand = new RelayCommand(IncreaseStatus);
             ArrowDownCommand = new RelayCommand(DecreaseStatus);
 
-            Smartphone.PropertyChanged += Smartphone_PropertyChanged;
+            Smartphone.Status.PropertyChanged += Status_PropertyChanged;
 
             ThreadController.StatusUpdateStart();
+        }
+
+        private void Status_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (string.Equals(e.PropertyName, "EnumStatus"))
+            {
+                switch (Smartphone.Status.EnumStatus)
+                {
+                    case StatusEnum.NoDevice:
+                    case StatusEnum.Unauthorized:
+                        Smartphone.Bezeichnung = string.Empty;
+                        break;
+
+                    case StatusEnum.ADB:
+                    case StatusEnum.Root:
+                    case StatusEnum.Recovery:
+                    case StatusEnum.Sideload:
+                        Smartphone.Bezeichnung = cracker.GetBezeichnung();
+                        break;
+
+                    default:
+                        Smartphone.Bezeichnung = string.Empty;
+                        break;
+                }
+            }
         }
 
         private void IncreaseStatus()
@@ -89,45 +113,24 @@ namespace SMPHCracker.ViewModel
             }
         }
 
-        private void Smartphone_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (string.Equals(e.PropertyName, "Status"))
-            {
-                switch (Smartphone.Status)
-                {
-                    case Status.NoDevice: case Status.Unauthorized:
-                        Smartphone.Bezeichnung = string.Empty;
-                        break;
-
-                    case Status.ADB: case Status.Root: case Status.Recovery: case Status.Sideload:
-                        Smartphone.Bezeichnung = cracker.GetBezeichnung();
-                        break;
-
-                    default:
-                        Smartphone.Bezeichnung = string.Empty;
-                        break;
-                }
-            } 
-        }
-
         public void GetStatus()
         {
-            Smartphone.Status = cracker.GetStatus();
+            Smartphone.Status.EnumStatus = cracker.GetStatus();
         }
 
         private void RemovePassoword()
         {
-            bool action = cracker.RemovePassoword(Smartphone.Status);
+            bool action = cracker.RemovePassoword(Smartphone.Status.EnumStatus);
         }
 
         private void EnableADB()
         {
-            bool action = cracker.EnableADB(Smartphone.Status);
+            bool action = cracker.EnableADB(Smartphone.Status.EnumStatus);
         }
 
         private void VerifyADB()
         {
-            bool action = cracker.VerifyADB(Smartphone.Status);
+            bool action = cracker.VerifyADB(Smartphone.Status.EnumStatus);
         }
 
         private void Execute()
@@ -142,7 +145,7 @@ namespace SMPHCracker.ViewModel
 
         private void ShowWLANKeys()
         {
-            Log = $"{Log}{Environment.NewLine}{cracker.ShowWLANKeys(Smartphone.Status)}";
+            Log = $"{Log}{Environment.NewLine}{cracker.ShowWLANKeys(Smartphone.Status.EnumStatus)}";
         }
     }
 }

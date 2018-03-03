@@ -1,4 +1,5 @@
 ﻿using SMPHCracker.Model;
+using SMPHCracker.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,28 +10,28 @@ namespace SMPHCracker.Logic
 {
     class TestCracker : ICracker
     {
-        private Status status = Status.ADB;
+        private StatusEnum status = StatusEnum.ADB;
         private string bezeichnung = "TestSmartphone";
 
-        public Status GetStatus()
+        public StatusEnum GetStatus()
         {
             return this.status;
         }
 
         public void IncrementStatus()
         {
-            if (status < Status.Sideload)
+            if (status < StatusEnum.Sideload)
                 this.status++;
             else
-                status = Status.NoDevice;
+                status = StatusEnum.NoDevice;
         }
 
         public void DecrementStatus()
         {
-            if (status > Status.NoDevice)
+            if (status > StatusEnum.NoDevice)
                 this.status--;
             else
-                status = Status.Sideload;
+                status = StatusEnum.Sideload;
         }
 
         public string Execute(ADBCommands command, params string[] str)
@@ -43,22 +44,22 @@ namespace SMPHCracker.Logic
             return bezeichnung;
         }
 
-        public bool RemovePassoword(Status status)
+        public bool RemovePassoword(StatusEnum status)
         {
             return true;
         }
 
-        public bool EnableADB(Status status)
+        public bool EnableADB(StatusEnum status)
         {
             return true;
         }
 
-        public bool VerifyADB(Status status)
+        public bool VerifyADB(StatusEnum status)
         {
             return true;
         }
 
-        public string ShowWLANKeys(Status status)
+        public string ShowWLANKeys(StatusEnum status)
         {
             return "Keys";
         }

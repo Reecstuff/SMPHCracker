@@ -1,10 +1,6 @@
-﻿using SMPHCracker.Model;
+﻿using SMPHCracker.Model.Enums;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace SMPHCracker.View.Converter
@@ -15,26 +11,26 @@ namespace SMPHCracker.View.Converter
         {
             if(value != null)
             {
-                Status status = (Status)value;
+                StatusEnum status = (StatusEnum)value;
 
                 switch (status)
                 {
-                    case Status.NoDevice:
+                    case StatusEnum.NoDevice:
                         return "No Device";
 
-                    case Status.Unauthorized:
+                    case StatusEnum.Unauthorized:
                         return "Unauthorized";
 
-                    case Status.ADB:
+                    case StatusEnum.ADB:
                         return "ADB";
 
-                    case Status.Root:
+                    case StatusEnum.Root:
                         return "Root";
 
-                    case Status.Recovery:
+                    case StatusEnum.Recovery:
                         return "Recovery";
 
-                    case Status.Sideload:
+                    case StatusEnum.Sideload:
                         return "Sideload";
 
                     default:
@@ -55,30 +51,30 @@ namespace SMPHCracker.View.Converter
                 switch (status)
                 {
                     case "No Device":
-                        return Status.NoDevice;
+                        return StatusEnum.NoDevice;
 
                     case "Unauthorized":
-                        return Status.Unauthorized;
+                        return StatusEnum.Unauthorized;
 
                     case "ADB":
-                        return Status.ADB;
+                        return StatusEnum.ADB;
 
                     case "Root":
-                        return Status.Root;
+                        return StatusEnum.Root;
 
                     case "Recovery":
-                        return Status.Recovery;
+                        return StatusEnum.Recovery;
 
                     case "Sideload":
-                        return Status.Sideload;
+                        return StatusEnum.Sideload;
 
                     default:
-                        return Status.NoDevice;
+                        return StatusEnum.NoDevice;
 
                 }
             }
 
-            return Status.NoDevice;
+            return StatusEnum.NoDevice;
         }
     }
 }

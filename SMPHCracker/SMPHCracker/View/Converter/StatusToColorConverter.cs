@@ -1,10 +1,6 @@
-﻿using SMPHCracker.Model;
+﻿using SMPHCracker.Model.Enums;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -16,26 +12,26 @@ namespace SMPHCracker.View.Converter
         {
             if(value != null)
             {
-                Status status = (Status)value;
+                StatusEnum status = (StatusEnum)value;
 
                 switch (status)
                 {
-                    case Status.NoDevice:
+                    case StatusEnum.NoDevice:
                         return Colors.Red.ToString();
 
-                    case Status.Unauthorized:
+                    case StatusEnum.Unauthorized:
                         return Colors.Red.ToString();
 
-                    case Status.ADB:
+                    case StatusEnum.ADB:
                         return Colors.Yellow.ToString();
 
-                    case Status.Root:
+                    case StatusEnum.Root:
                         return Colors.Green.ToString();
 
-                    case Status.Recovery:
+                    case StatusEnum.Recovery:
                         return Colors.Green.ToString();
 
-                    case Status.Sideload:
+                    case StatusEnum.Sideload:
                         return Colors.Green.ToString();
 
                     default:

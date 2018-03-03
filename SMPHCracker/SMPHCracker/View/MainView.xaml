@@ -43,7 +43,7 @@
                             <Label Content="Status" FontSize="16" FontWeight="Bold" Foreground="Teal" Margin="3,0"/>
                         </GroupBox.Header>
 
-                        <Button Content="{Binding Smartphone.Status, Converter={StaticResource StatusToStringConverter}}" FontWeight="Bold" Background="{Binding Smartphone.Status, Converter={StaticResource StatusToColorConverter}}">
+                        <Button Content="{Binding Smartphone.Status.EnumStatus, Converter={StaticResource StatusToStringConverter}}" FontWeight="Bold" Background="{Binding Smartphone.Status.EnumStatus, Converter={StaticResource StatusToColorConverter}}">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
                                     <Style.Triggers>
@@ -77,7 +77,7 @@
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
 
-                            <Button Grid.Row="0" Content="Remove Password" Command="{Binding RemovePasswordCommand}" Margin="10,20"/>
+                            <Button Grid.Row="0" Content="Remove Password" Command="{Binding RemovePasswordCommand}" IsEnabled="{Binding Smartphone.Status.IsRootXRecoveryXSideload}" Margin="10,20"/>
                         </Grid>
                     </GroupBox>
 
@@ -93,8 +93,8 @@
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
 
-                            <Button Grid.Row="0" Content="Enable ADB" Command="{Binding EnableADBCommand}" Margin="10,20"/>
-                            <Button Grid.Row="1" Content="Authorize PC" Command="{Binding VerifyADBCommand}" Margin="10,20"/>
+                            <Button Grid.Row="0" Content="Enable ADB" Command="{Binding EnableADBCommand}" IsEnabled="{Binding Smartphone.Status.IsRecovery}" Margin="10,20"/>
+                            <Button Grid.Row="1" Content="Authorize PC" Command="{Binding VerifyADBCommand}" IsEnabled="{Binding Smartphone.Status.IsRecoveryXSideload}" Margin="10,20"/>
                         </Grid>
                     </GroupBox>
 
@@ -111,7 +111,7 @@
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
 
-                            <Button Grid.Row="0" Content="Show WLAN-Keys" Command="{Binding ShowWLANKeysCommand}" Margin="10,20"/>
+                            <Button Grid.Row="0" Content="Show WLAN-Keys" Command="{Binding ShowWLANKeysCommand}" IsEnabled="{Binding Smartphone.Status.IsRootXRecovery}" Margin="10,20"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -130,22 +130,13 @@
 
                     <TextBox Grid.Row="0" Text="{Binding Log}" Background="DarkGray" BorderBrush="Black" IsReadOnly="True" Focusable="False" Padding="5" TextWrapping="Wrap" TextChanged="TextBox_TextChanged"/>
 
-                    <Grid Name="Input" Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-
-                      <TextBox Grid.Column="0" Text="{Binding CommandInput, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,5,10">
-                          <TextBox.InputBindings>
-                              <KeyBinding Key="Enter" Command="{Binding ExecuteCommand}"/>
-                              <KeyBinding Key="Down" Command="{Binding ArrowDownCommand}"/>
-                              <KeyBinding Key="Up" Command="{Binding ArrowUpCommand}"/>
-                          </TextBox.InputBindings>
-                      </TextBox>
-                      
-                      <Button Grid.Column="1" Content="Execute" Margin="0,10"/>
-                    </Grid>
+                    <TextBox Grid.Row="1" Text="{Binding CommandInput, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,5,10">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding ExecuteCommand}"/>
+                            <KeyBinding Key="Down" Command="{Binding ArrowDownCommand}"/>
+                            <KeyBinding Key="Up" Command="{Binding ArrowUpCommand}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
                 </Grid>
             </GroupBox>
             

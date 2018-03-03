@@ -1,27 +1,23 @@
-﻿using SMPHCracker.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SMPHCracker.Model.Enums;
+
 
 namespace SMPHCracker.Logic
 {
     public interface ICracker
     {
-        Status GetStatus();
+        StatusEnum GetStatus();
 
         string Execute(ADBCommands command, params string[] str);
 
         string GetBezeichnung();
 
         //ShellSu
-        bool RemovePassoword(Status status);
+        bool RemovePassoword(StatusEnum status);
 
-        bool EnableADB(Status status);
+        bool EnableADB(StatusEnum status);
 
-        bool VerifyADB(Status status);
+        bool VerifyADB(StatusEnum status);
 
-        string ShowWLANKeys(Status status);
+        string ShowWLANKeys(StatusEnum status);
     }
 }

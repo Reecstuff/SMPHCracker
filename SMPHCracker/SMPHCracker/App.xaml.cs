@@ -1,11 +1,5 @@
 ﻿using SMPHCracker.Logic;
-using SMPHCracker.Model;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using SMPHCracker.Model.Enums;
 using System.Windows;
 
 namespace SMPHCracker

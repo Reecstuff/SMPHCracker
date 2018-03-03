@@ -64,19 +64,21 @@
     <Compile Include="Logic\ADB.cs" />
     <Compile Include="Logic\Cracker.cs" />
     <Compile Include="Logic\ICracker.cs" />
-    <Compile Include="Model\ADBCommands.cs" />
-    <Compile Include="Model\ADBDictionary.cs" />
-    <Compile Include="Model\StatusDictionary.cs" />
+    <Compile Include="Model\Enums\ADBCommands.cs" />
+    <Compile Include="Model\Dictionarys\ADBDictionary.cs" />
+    <Compile Include="Model\Dictionarys\StatusDictionary.cs" />
+    <Compile Include="Model\Status.cs" />
     <Compile Include="ThreadController.cs" />
     <Compile Include="ViewModel\Helper\RelayCommand.cs" />
+    <Compile Include="ViewModel\ModelsViewModel\StatusViewModel.cs" />
     <Compile Include="View\Converter\StatusToColorConverter.cs" />
     <Compile Include="View\Converter\StatusToStringConverter.cs" />
     <Compile Include="Logic\TestCracker.cs" />
     <Compile Include="Model\Smartphone.cs" />
-    <Compile Include="Model\Status.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="Model\Enums\StatusEnum.cs" />
+    <Compile Include="ViewModel\ViewsViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Helper\NotifyPropertyChanged.cs" />
-    <Compile Include="ViewModel\SmartphoneViewModel.cs" />
+    <Compile Include="ViewModel\ModelsViewModel\SmartphoneViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

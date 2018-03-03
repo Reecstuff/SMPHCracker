@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SMPHCracker.Model
+namespace SMPHCracker.Model.Enums
 {
     public enum ADBCommands
     {
