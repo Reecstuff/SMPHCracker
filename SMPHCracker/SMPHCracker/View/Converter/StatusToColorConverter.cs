@@ -12,26 +12,26 @@ namespace SMPHCracker.View.Converter
         {
             if(value != null)
             {
-                StatusEnum status = (StatusEnum)value;
+                Status status = (Status)value;
 
                 switch (status)
                 {
-                    case StatusEnum.NoDevice:
+                    case Status.NoDevice:
                         return Colors.Red.ToString();
 
-                    case StatusEnum.Unauthorized:
+                    case Status.Unauthorized:
                         return Colors.Red.ToString();
 
-                    case StatusEnum.ADB:
+                    case Status.ADB:
                         return Colors.Yellow.ToString();
 
-                    case StatusEnum.Root:
+                    case Status.Root:
                         return Colors.Green.ToString();
 
-                    case StatusEnum.Recovery:
+                    case Status.Recovery:
                         return Colors.Green.ToString();
 
-                    case StatusEnum.Sideload:
+                    case Status.Sideload:
                         return Colors.Green.ToString();
 
                     default:

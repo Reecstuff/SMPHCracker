@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SMPHCracker"
         xmlns:converter="clr-namespace:SMPHCracker.View.Converter"
+        xmlns:enums="clr-namespace:SMPHCracker.Model.Enums"
         mc:Ignorable="d"
         DataContext="{Binding MainView, Source={StaticResource ViewModelLocator}}"
         Title="Smartphone-Cracker" Height="500" Width="1000">
@@ -12,6 +13,7 @@
     <Window.Resources>
         <converter:StatusToStringConverter x:Key="StatusToStringConverter"/>
         <converter:StatusToColorConverter x:Key="StatusToColorConverter"/>
+        <converter:StatusToBoolConverter x:Key="StatusToBoolConverter"/>
     </Window.Resources>
 
     <Window.InputBindings>
@@ -43,7 +45,7 @@
                             <Label Content="Status" FontSize="16" FontWeight="Bold" Foreground="Teal" Margin="3,0"/>
                         </GroupBox.Header>
 
-                        <Button Content="{Binding Smartphone.Status.EnumStatus, Converter={StaticResource StatusToStringConverter}}" FontWeight="Bold" Background="{Binding Smartphone.Status.EnumStatus, Converter={StaticResource StatusToColorConverter}}">
+                        <Button Content="{Binding Smartphone.Status, Converter={StaticResource StatusToStringConverter}}" FontWeight="Bold" Background="{Binding Smartphone.Status, Converter={StaticResource StatusToColorConverter}}">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
                                     <Style.Triggers>
@@ -77,7 +79,7 @@
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
 
-                            <Button Grid.Row="0" Content="Remove Password" Command="{Binding RemovePasswordCommand}" IsEnabled="{Binding Smartphone.Status.IsRootXRecoveryXSideload}" Margin="10,20"/>
+                            <Button Grid.Row="0" Content="Remove Password" Command="{Binding RemovePasswordCommand}" IsEnabled="{Binding Smartphone.Status, Converter={StaticResource StatusToBoolConverter}, ConverterParameter={x:Static enums:Status.RootXRecoveryXSideload}}" Margin="10,20"/>
                         </Grid>
                     </GroupBox>
 
@@ -93,8 +95,8 @@
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
 
-                            <Button Grid.Row="0" Content="Enable ADB" Command="{Binding EnableADBCommand}" IsEnabled="{Binding Smartphone.Status.IsRecovery}" Margin="10,20"/>
-                            <Button Grid.Row="1" Content="Authorize PC" Command="{Binding VerifyADBCommand}" IsEnabled="{Binding Smartphone.Status.IsRecoveryXSideload}" Margin="10,20"/>
+                            <Button Grid.Row="0" Content="Enable ADB" Command="{Binding EnableADBCommand}" IsEnabled="{Binding Smartphone.Status, Converter={StaticResource StatusToBoolConverter}, ConverterParameter={x:Static enums:Status.Recovery}}" Margin="10,20"/>
+                            <Button Grid.Row="1" Content="Authorize PC" Command="{Binding VerifyADBCommand}" IsEnabled="{Binding Smartphone.Status, Converter={StaticResource StatusToBoolConverter}, ConverterParameter={x:Static enums:Status.RecoveryXSideload}}" Margin="10,20"/>
                         </Grid>
                     </GroupBox>
 
@@ -111,7 +113,7 @@
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
 
-                            <Button Grid.Row="0" Content="Show WLAN-Keys" Command="{Binding ShowWLANKeysCommand}" IsEnabled="{Binding Smartphone.Status.IsRootXRecovery}" Margin="10,20"/>
+                            <Button Grid.Row="0" Content="Show WLAN-Keys" Command="{Binding ShowWLANKeysCommand}" IsEnabled="{Binding Smartphone.Status, Converter={StaticResource StatusToBoolConverter}, ConverterParameter={x:Static enums:Status.RootXRecovery}}" Margin="10,20"/>
                         </Grid>
                     </GroupBox>
                 </Grid>

@@ -11,17 +11,17 @@ namespace SMPHCracker.Logic
     class Cracker : ICracker
     {
         private Dictionary<ADBCommands, String> adbDictionary = new ADBDictionary().GetDictionary();
-        private Dictionary<String, StatusEnum> statusDictionary = new StatusDictionary().GetStatusDictionary();
+        private Dictionary<String, Status> statusDictionary = new StatusDictionary().GetStatusDictionary();
 
-        public StatusEnum GetStatus()
+        public Status GetStatus()
         {
-            StatusEnum status;
+            Status status;
 
             String output = Execute(ADBCommands.DEVICES);
 
             statusDictionary.TryGetValue(statusDictionary.Keys.FirstOrDefault(k => output.Contains($"{k}\r")) ?? "nodevice", out status);
 
-            return status != StatusEnum.ADB ? status : (output = Execute(ADBCommands.SHELLROOT)).Contains("denied") || output.Contains("error") ? StatusEnum.ADB : StatusEnum.Root;       
+            return status != Status.ADB ? status : (output = Execute(ADBCommands.SHELLROOT)).Contains("denied") || output.Contains("error") ? Status.ADB : Status.Root;       
    
         }
 
@@ -43,11 +43,11 @@ namespace SMPHCracker.Logic
             return $"{Execute(ADBCommands.GETPROP, "ro.product.brand")} {Execute(ADBCommands.GETPROP, "ro.product.model")}";
         }
 
-        public bool RemovePassoword(StatusEnum status)
+        public bool RemovePassoword(Status status)
         {
             switch (status)
             {
-                case StatusEnum.Root:
+                case Status.Root:
                     //Check if .key file exists
                     if (!(Execute(ADBCommands.SHELLROOT, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("true")))
                         return false;
@@ -64,7 +64,7 @@ namespace SMPHCracker.Logic
                     else
                         return false;
 
-                case StatusEnum.Recovery:
+                case Status.Recovery:
                     //Check if .key file exists
                     if (!(Execute(ADBCommands.SHELL, "ls /data/system/*.key > /dev/null 2>&1 && echo 'true' || echo 'false'").Contains("true")))
                         return false;
@@ -81,7 +81,7 @@ namespace SMPHCracker.Logic
                     else
                         return false;
 
-                case StatusEnum.Sideload:
+                case Status.Sideload:
                     return RemovePasswordSideload();
 
                 default:
@@ -93,11 +93,11 @@ namespace SMPHCracker.Logic
             return false;
         }
 
-        public bool EnableADB(StatusEnum status)
+        public bool EnableADB(Status status)
         {
             switch (status)
             {
-                case StatusEnum.Recovery:
+                case Status.Recovery:
                     //TODO - check if enabling ADB was successfully
 
                     //Add ADB-Settings
@@ -113,7 +113,7 @@ namespace SMPHCracker.Logic
 
                     return true;
 
-                case StatusEnum.Sideload:
+                case Status.Sideload:
                     return EnableADBSideload();
 
                 default:
@@ -125,9 +125,9 @@ namespace SMPHCracker.Logic
             return false;
         }
 
-        public bool VerifyADB(StatusEnum status)
+        public bool VerifyADB(Status status)
         {
-            if (status == StatusEnum.Recovery)
+            if (status == Status.Recovery)
             {
                 //TODO - get adkey.pub from folder .android
                 //TODO - check if vertifying PC was successfully
@@ -137,7 +137,7 @@ namespace SMPHCracker.Logic
 
                 return true;
             }
-            else if(status == StatusEnum.Sideload)
+            else if(status == Status.Sideload)
             {
                 return VertifyADBSideload();
             }
@@ -149,15 +149,15 @@ namespace SMPHCracker.Logic
             return false;
         }
 
-        public string ShowWLANKeys(StatusEnum status)
+        public string ShowWLANKeys(Status status)
         {
             switch (status)
             {
-                case StatusEnum.Root:
+                case Status.Root:
                     //Show WLAN-Keys
                     return Execute(ADBCommands.SHELLROOT, "cat /data/misc/wifi/wpa_supplicant.conf");
 
-                case StatusEnum.Recovery:
+                case Status.Recovery:
                     //Show WLAN-Keys
                     return Execute(ADBCommands.SHELL, "cat /data/misc/wifi/wpa_supplicant.conf");
 

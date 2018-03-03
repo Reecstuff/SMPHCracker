@@ -13,7 +13,7 @@ namespace SMPHCracker.ViewModel.ViewsViewModel
         public SmartphoneViewModel Smartphone { get; set; } = new SmartphoneViewModel();
 
         //Switch to TestCracker if possible
-        private ICracker cracker = new Cracker();
+        private ICracker cracker = new TestCracker();
 
         private string commandInput;
         private string log;
@@ -67,26 +67,26 @@ namespace SMPHCracker.ViewModel.ViewsViewModel
             ArrowUpCommand = new RelayCommand(IncreaseStatus);
             ArrowDownCommand = new RelayCommand(DecreaseStatus);
 
-            Smartphone.Status.PropertyChanged += Status_PropertyChanged;
+            Smartphone.PropertyChanged += Smartphone_PropertyChanged;
 
             ThreadController.StatusUpdateStart();
         }
 
-        private void Status_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Smartphone_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (string.Equals(e.PropertyName, "EnumStatus"))
+            if (string.Equals(e.PropertyName, "Status"))
             {
-                switch (Smartphone.Status.EnumStatus)
+                switch (Smartphone.Status)
                 {
-                    case StatusEnum.NoDevice:
-                    case StatusEnum.Unauthorized:
+                    case Status.NoDevice:
+                    case Status.Unauthorized:
                         Smartphone.Bezeichnung = string.Empty;
                         break;
 
-                    case StatusEnum.ADB:
-                    case StatusEnum.Root:
-                    case StatusEnum.Recovery:
-                    case StatusEnum.Sideload:
+                    case Status.ADB:
+                    case Status.Root:
+                    case Status.Recovery:
+                    case Status.Sideload:
                         Smartphone.Bezeichnung = cracker.GetBezeichnung();
                         break;
 
@@ -115,22 +115,22 @@ namespace SMPHCracker.ViewModel.ViewsViewModel
 
         public void GetStatus()
         {
-            Smartphone.Status.EnumStatus = cracker.GetStatus();
+            Smartphone.Status = cracker.GetStatus();
         }
 
         private void RemovePassoword()
         {
-            bool action = cracker.RemovePassoword(Smartphone.Status.EnumStatus);
+            bool action = cracker.RemovePassoword(Smartphone.Status);
         }
 
         private void EnableADB()
         {
-            bool action = cracker.EnableADB(Smartphone.Status.EnumStatus);
+            bool action = cracker.EnableADB(Smartphone.Status);
         }
 
         private void VerifyADB()
         {
-            bool action = cracker.VerifyADB(Smartphone.Status.EnumStatus);
+            bool action = cracker.VerifyADB(Smartphone.Status);
         }
 
         private void Execute()
@@ -145,7 +145,7 @@ namespace SMPHCracker.ViewModel.ViewsViewModel
 
         private void ShowWLANKeys()
         {
-            Log = $"{Log}{Environment.NewLine}{cracker.ShowWLANKeys(Smartphone.Status.EnumStatus)}";
+            Log = $"{Log}{Environment.NewLine}{cracker.ShowWLANKeys(Smartphone.Status)}";
         }
     }
 }

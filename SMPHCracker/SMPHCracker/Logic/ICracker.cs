@@ -5,19 +5,19 @@ namespace SMPHCracker.Logic
 {
     public interface ICracker
     {
-        StatusEnum GetStatus();
+        Status GetStatus();
 
         string Execute(ADBCommands command, params string[] str);
 
         string GetBezeichnung();
 
         //ShellSu
-        bool RemovePassoword(StatusEnum status);
+        bool RemovePassoword(Status status);
 
-        bool EnableADB(StatusEnum status);
+        bool EnableADB(Status status);
 
-        bool VerifyADB(StatusEnum status);
+        bool VerifyADB(Status status);
 
-        string ShowWLANKeys(StatusEnum status);
+        string ShowWLANKeys(Status status);
     }
 }

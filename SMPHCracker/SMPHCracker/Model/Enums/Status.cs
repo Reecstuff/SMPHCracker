@@ -6,13 +6,18 @@ using System.Threading.Tasks;
 
 namespace SMPHCracker.Model.Enums
 {
-    public enum StatusEnum
+    public enum Status
     {
         NoDevice,
         Unauthorized,
         ADB,
         Root,       // + ADB
         Recovery,    // + Root
-        Sideload
+        Sideload,
+
+        //Just for Converters!
+        RootXRecovery,
+        RootXRecoveryXSideload,
+        RecoveryXSideload
     }
 }

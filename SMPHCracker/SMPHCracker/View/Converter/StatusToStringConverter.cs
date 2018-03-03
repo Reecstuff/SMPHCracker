@@ -11,26 +11,26 @@ namespace SMPHCracker.View.Converter
         {
             if(value != null)
             {
-                StatusEnum status = (StatusEnum)value;
+                Status status = (Status)value;
 
                 switch (status)
                 {
-                    case StatusEnum.NoDevice:
+                    case Status.NoDevice:
                         return "No Device";
 
-                    case StatusEnum.Unauthorized:
+                    case Status.Unauthorized:
                         return "Unauthorized";
 
-                    case StatusEnum.ADB:
+                    case Status.ADB:
                         return "ADB";
 
-                    case StatusEnum.Root:
+                    case Status.Root:
                         return "Root";
 
-                    case StatusEnum.Recovery:
+                    case Status.Recovery:
                         return "Recovery";
 
-                    case StatusEnum.Sideload:
+                    case Status.Sideload:
                         return "Sideload";
 
                     default:
@@ -51,30 +51,30 @@ namespace SMPHCracker.View.Converter
                 switch (status)
                 {
                     case "No Device":
-                        return StatusEnum.NoDevice;
+                        return Status.NoDevice;
 
                     case "Unauthorized":
-                        return StatusEnum.Unauthorized;
+                        return Status.Unauthorized;
 
                     case "ADB":
-                        return StatusEnum.ADB;
+                        return Status.ADB;
 
                     case "Root":
-                        return StatusEnum.Root;
+                        return Status.Root;
 
                     case "Recovery":
-                        return StatusEnum.Recovery;
+                        return Status.Recovery;
 
                     case "Sideload":
-                        return StatusEnum.Sideload;
+                        return Status.Sideload;
 
                     default:
-                        return StatusEnum.NoDevice;
+                        return Status.NoDevice;
 
                 }
             }
 
-            return StatusEnum.NoDevice;
+            return Status.NoDevice;
         }
     }
 }

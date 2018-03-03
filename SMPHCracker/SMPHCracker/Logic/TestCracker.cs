@@ -10,28 +10,28 @@ namespace SMPHCracker.Logic
 {
     class TestCracker : ICracker
     {
-        private StatusEnum status = StatusEnum.ADB;
+        private Status status = Status.ADB;
         private string bezeichnung = "TestSmartphone";
 
-        public StatusEnum GetStatus()
+        public Status GetStatus()
         {
             return this.status;
         }
 
         public void IncrementStatus()
         {
-            if (status < StatusEnum.Sideload)
+            if (status < Status.Sideload)
                 this.status++;
             else
-                status = StatusEnum.NoDevice;
+                status = Status.NoDevice;
         }
 
         public void DecrementStatus()
         {
-            if (status > StatusEnum.NoDevice)
+            if (status > Status.NoDevice)
                 this.status--;
             else
-                status = StatusEnum.Sideload;
+                status = Status.Sideload;
         }
 
         public string Execute(ADBCommands command, params string[] str)
@@ -44,22 +44,22 @@ namespace SMPHCracker.Logic
             return bezeichnung;
         }
 
-        public bool RemovePassoword(StatusEnum status)
+        public bool RemovePassoword(Status status)
         {
             return true;
         }
 
-        public bool EnableADB(StatusEnum status)
+        public bool EnableADB(Status status)
         {
             return true;
         }
 
-        public bool VerifyADB(StatusEnum status)
+        public bool VerifyADB(Status status)
         {
             return true;
         }
 
-        public string ShowWLANKeys(StatusEnum status)
+        public string ShowWLANKeys(Status status)
         {
             return "Keys";
         }

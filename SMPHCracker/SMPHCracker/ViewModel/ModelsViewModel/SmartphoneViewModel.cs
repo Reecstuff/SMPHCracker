@@ -1,5 +1,6 @@
 ﻿using SMPHCracker.Logic;
 using SMPHCracker.Model;
+using SMPHCracker.Model.Enums;
 using SMPHCracker.ViewModel.Helper;
 
 namespace SMPHCracker.ViewModel.ModelsViewModel
@@ -7,7 +8,6 @@ namespace SMPHCracker.ViewModel.ModelsViewModel
     public class SmartphoneViewModel : NotifyPropertyChanged
     {
         private Smartphone smartphone = new Smartphone();
-        private StatusViewModel status = new StatusViewModel();
 
         public string Bezeichnung
         {
@@ -21,9 +21,17 @@ namespace SMPHCracker.ViewModel.ModelsViewModel
                 }
             }
         }
-        public StatusViewModel Status
+        public Status Status
         {
-            get { return this.status; }
+            get { return this.smartphone.Status; }
+            set
+            {
+                if(Status != value)
+                {
+                    this.smartphone.Status = value;
+                    OnPropertyChanged();
+                }
+            }
         }
     }
 }
