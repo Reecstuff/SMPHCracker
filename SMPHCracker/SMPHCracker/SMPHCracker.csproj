@@ -35,6 +35,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -64,6 +66,7 @@
     <Compile Include="Logic\ADB.cs" />
     <Compile Include="Logic\Cracker.cs" />
     <Compile Include="Logic\ICracker.cs" />
+    <Compile Include="Logic\Zipper.cs" />
     <Compile Include="Model\Enums\ADBCommands.cs" />
     <Compile Include="Model\Dictionarys\ADBDictionary.cs" />
     <Compile Include="Model\Dictionarys\StatusDictionary.cs" />

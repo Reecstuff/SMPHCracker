@@ -1,0 +1,35 @@
+ui_print("****************************************");
+ui_print("* Script generated for SMPHCracker. *");
+ui_print("*        Run custom script!        *");
+ui_print("****************************************");
+ui_print("");
+ui_print("");
+
+show_progress(1.000000, 0);
+ui_print("Mounting filesystems...");
+run_program("/sbin/busybox", "mount", "/data");
+set_progress(0.100000);
+
+ui_print("Extracting files...");
+package_extract_file("script.sh", "/tmp/script.sh");
+set_progress(0.300000);
+
+ui_print("Running script...");
+
+set_perm(0, 0, 0777, "/tmp/script.sh");
+run_program("/tmp/script.sh");
+delete("/tmp/script.sh");
+
+set_progress(0.400000);
+set_progress(0.500000);
+set_progress(0.700000);
+
+# Unmounting filesystems...
+run_program("/sbin/busybox", "umount", "/data");
+set_progress(0.900000);
+
+
+set_progress(1.000000);
+ui_print("****************************************");
+ui_print("*          Crack complete!           *");
+ui_print("****************************************");

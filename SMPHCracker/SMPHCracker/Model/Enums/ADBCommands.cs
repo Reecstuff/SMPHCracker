@@ -31,5 +31,8 @@ namespace SMPHCracker.Model.Enums
         UNLOCK,         //flashing unlock [CODE](OPTIONAL)
         FLASHRECOVERY,  //flash recovery [RECOVERY]
         FLASHVENDOR,    //flash vendor [VENDOR]
+
+        //SIDELOAD
+        SIDELOADFLASH,  //sideload [DATEI]
     }
 }

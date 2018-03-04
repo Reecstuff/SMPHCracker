@@ -33,6 +33,9 @@ namespace SMPHCracker.Model.Dictionarys
             dic.Add(ADBCommands.UNLOCK, "fastboot flashing unlock");
             dic.Add(ADBCommands.FLASHRECOVERY, "fastboot flash recovery");
             dic.Add(ADBCommands.FLASHVENDOR, "fastboot flash vendor");
+
+            //SIDELOAD
+            dic.Add(ADBCommands.SIDELOADFLASH, "adb sideload");
         }
 
         public Dictionary<ADBCommands, String> GetDictionary()

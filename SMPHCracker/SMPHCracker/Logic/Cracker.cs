@@ -3,6 +3,7 @@ using SMPHCracker.Model.Dictionarys;
 using SMPHCracker.Model.Enums;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 
@@ -90,7 +91,15 @@ namespace SMPHCracker.Logic
         }
         private bool RemovePasswordSideload()
         {
-            return false;
+            //Not working!
+            //new Zipper().MakeZip("lockscreenRemover");
+            //
+            //string path = AppDomain.CurrentDomain.BaseDirectory;
+            //string zipPath = Directory.Exists(Path.Combine(path, "sideloadFiles\\update.zip")) ? Path.Combine(path, "sideloadFiles\\update.zip") : Path.Combine(new DirectoryInfo(path).Parent.Parent.FullName, "sideloadFiles\\update.zip");
+            //
+            //Execute(ADBCommands.SIDELOADFLASH, zipPath);
+            //
+            //return true;
         }
 
         public bool EnableADB(Status status)
@@ -125,7 +134,7 @@ namespace SMPHCracker.Logic
             return false;
         }
 
-        public bool VerifyADB(Status status)
+    public bool VerifyADB(Status status)
         {
             if (status == Status.Recovery)
             {
