@@ -99,7 +99,7 @@ namespace SMPHCracker.Logic
             //
             //Execute(ADBCommands.SIDELOADFLASH, zipPath);
             //
-            //return true;
+            return true;
         }
 
         public bool EnableADB(Status status)

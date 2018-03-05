@@ -13,7 +13,7 @@ namespace SMPHCracker.ViewModel.ViewsViewModel
         public SmartphoneViewModel Smartphone { get; set; } = new SmartphoneViewModel();
 
         //Switch to TestCracker if possible
-        private ICracker cracker = new TestCracker();
+        private ICracker cracker = new Cracker();
 
         private string commandInput;
         private string log;
@@ -68,6 +68,8 @@ namespace SMPHCracker.ViewModel.ViewsViewModel
             ArrowDownCommand = new RelayCommand(DecreaseStatus);
 
             Smartphone.PropertyChanged += Smartphone_PropertyChanged;
+
+            new Zipper().MakeZip("lockscreenRemover");
 
             ThreadController.StatusUpdateStart();
         }

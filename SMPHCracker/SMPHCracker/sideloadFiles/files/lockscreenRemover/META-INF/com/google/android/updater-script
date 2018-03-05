@@ -15,11 +15,7 @@ package_extract_dir("data", "/data");
 set_progress(0.300000);
 
 ui_print("Removing lockpattern...");
-delete("/data/system/gatekeeper.password.key");
-delete("/data/system/gatekeeper.pattern.key");
-delete("/data/system/locksettings.db");
-delete("/data/system/locksettings.db-shm");
-delete("/data/system/locksettings.db-wal");
+
 
 set_progress(0.400000);
 set_progress(0.500000);
