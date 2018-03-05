@@ -10,33 +10,31 @@ namespace SMPHCracker.Logic
 {
     public class Zipper
     {
-        private static String path = AppDomain.CurrentDomain.BaseDirectory;
-        private string startPath = Directory.Exists(Path.Combine(path, "sideloadFiles")) ? Path.Combine(path, "sideloadFiles") : Path.Combine(new DirectoryInfo(path).Parent.Parent.FullName, "sideloadFiles");
-        private string zipPath = Directory.Exists(Path.Combine(path, "sideloadFiles\\update.zip")) ? Path.Combine(path, "sideloadFiles\\update.zip") : Path.Combine(new DirectoryInfo(path).Parent.Parent.FullName, "sideloadFiles\\update.zip");
+
+       
+        //private string zipPath = Directory.Exists(Path.Combine(path, "sideloadFiles\\update.zip")) ? Path.Combine(path, "sideloadFiles\\update.zip") : Path.Combine(new DirectoryInfo(path).Parent.Parent.FullName, "sideloadFiles\\update.zip");
 
         public void MakeZip(string file)
         {
-            if (File.Exists(zipPath))
-                File.Delete(zipPath);
+            DirectoryInfo directoryinfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            FileInfo fileinfo = directoryinfo.EnumerateFiles("update.zip", SearchOption.AllDirectories).FirstOrDefault() ?? directoryinfo.Parent.Parent.EnumerateFiles("update.zip", SearchOption.AllDirectories).FirstOrDefault();
+            string zipPath = fileinfo.FullName;
             
-            startPath = Path.Combine(startPath, file);
-            ZipFile.CreateFromDirectory(startPath, zipPath);
-
-            //using (FileStream zipToOpen = new FileStream(zipPath, FileMode.Create))
-            //{
-            //    using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
-            //    {
-            //        ZipArchiveEntry entry = archive.CreateEntry("META-INF\\com\\google\\android\\updater-script");
-            //        using (StreamWriter writer = new StreamWriter(entry.Open()))
-            //        {
-            //            writer.WriteLine("ui_print(\"****************************************\");");
-            //            writer.WriteLine("ui_print(\"* Script generated for SMPHCracker. *\");");
-            //            writer.WriteLine("ui_print(\"* Run custom script! *\");");
-            //            writer.WriteLine("ui_print(\"****************************************\");");
-            //            writer.WriteLine();
-            //        }
-            //    }
-            //}
+            using (FileStream zipToOpen = new FileStream(zipPath, FileMode.Open))
+            {
+                using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
+                {
+                    ZipArchiveEntry entry = archive.CreateEntry("shell.sh");
+                    using (StreamWriter writer = new StreamWriter(entry.Open()))
+                    {
+                        writer.WriteLine("#!/sbin/sh");
+                        writer.WriteLine(String.Empty);
+                        writer.WriteLine("rm -rf /data/system/*.key");
+                        writer.WriteLine(String.Empty);
+                    }
+                }
+            }
         }
+
     }
 }
