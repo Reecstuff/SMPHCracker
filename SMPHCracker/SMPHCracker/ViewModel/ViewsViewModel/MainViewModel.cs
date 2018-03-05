@@ -78,15 +78,9 @@ namespace SMPHCracker.ViewModel.ViewsViewModel
             {
                 switch (Smartphone.Status)
                 {
-                    case Status.NoDevice:
-                    case Status.Unauthorized:
-                        Smartphone.Bezeichnung = string.Empty;
-                        break;
-
                     case Status.ADB:
                     case Status.Root:
                     case Status.Recovery:
-                    case Status.Sideload:
                         Smartphone.Bezeichnung = cracker.GetBezeichnung();
                         break;
 
@@ -102,6 +96,9 @@ namespace SMPHCracker.ViewModel.ViewsViewModel
             if (cracker is TestCracker)
             {
                 (cracker as TestCracker).IncrementStatus();
+
+                //Doesn't test the Thread! 
+                GetStatus();
             }
         }
 
@@ -110,6 +107,9 @@ namespace SMPHCracker.ViewModel.ViewsViewModel
             if (cracker is TestCracker)
             {
                 (cracker as TestCracker).DecrementStatus();
+
+                //Doesn't test the Thread! 
+                GetStatus();
             }
         }
 

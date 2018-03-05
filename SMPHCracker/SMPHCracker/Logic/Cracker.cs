@@ -94,12 +94,10 @@ namespace SMPHCracker.Logic
             //Not working!
             //new Zipper().MakeZip("lockscreenRemover");
             //
-            //string path = AppDomain.CurrentDomain.BaseDirectory;
-            //string zipPath = Directory.Exists(Path.Combine(path, "sideloadFiles\\update.zip")) ? Path.Combine(path, "sideloadFiles\\update.zip") : Path.Combine(new DirectoryInfo(path).Parent.Parent.FullName, "sideloadFiles\\update.zip");
-            //
-            //Execute(ADBCommands.SIDELOADFLASH, zipPath);
+            //Execute(ADBCommands.SIDELOADFLASH);
             //
             //return true;
+            return false;
         }
 
         public bool EnableADB(Status status)

@@ -35,7 +35,7 @@ namespace SMPHCracker.Model.Dictionarys
             dic.Add(ADBCommands.FLASHVENDOR, "fastboot flash vendor");
 
             //SIDELOAD
-            dic.Add(ADBCommands.SIDELOADFLASH, "adb sideload");
+            dic.Add(ADBCommands.SIDELOADFLASH, "adb sideload /update.zip");
         }
 
         public Dictionary<ADBCommands, String> GetDictionary()
